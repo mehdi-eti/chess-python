@@ -1,4 +1,4 @@
-# 3:55:00
+# 4:10:30
 
 import pygame
 import sys
@@ -76,7 +76,10 @@ class Main:
 
                         # valid move?
                         if board.valid_move(dragger.piece, move):
+                            captured = board.squares[released_row][released_col].has_piece()
                             board.move(dragger.piece, move)
+                            # Sound
+                            game.play_sound(captured)
                             game.next_turn()
 
                     dragger.undrag_piece()
@@ -84,7 +87,7 @@ class Main:
                 # key press
                 elif event.type == pygame.KEYDOWN:
                     # FIXME: should change 768 to pygame.K_t
-                    if event.type == 768:
+                    if event.key == pygame.K_t:
                         # changing
                         game.change_theme()
 
