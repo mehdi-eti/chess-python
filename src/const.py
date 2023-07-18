@@ -25,7 +25,7 @@ DARK_YELLOW = "#fee543"
 GREEN_THEME = {
     "light_bg": (234, 235, 200),
     "dark_bg": (119, 154, 88),
-    "light_trace": (244, 447, 116),
+    "light_trace": (244, 247, 116),
     "dark_trace": (172, 195, 51),
     "light_moves": "#C86464",
     "dark_moves": "#C84646"

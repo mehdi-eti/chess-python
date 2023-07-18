@@ -47,7 +47,7 @@ class Main:
 
                         # valid piece (color)
                         if piece.color == game.next_player:
-                            board.calc_moves(piece, clicked_row, clicked_col)
+                            board.calc_moves(piece, clicked_row, clicked_col, bool=True)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
 
@@ -90,6 +90,14 @@ class Main:
                     if event.key == pygame.K_t:
                         # changing
                         game.change_theme()
+
+                    if event.key == pygame.K_r:
+                        # changing
+                        game.reset_game()
+                        game = self.game
+                        board = self.game.board
+                        screen = self.screen
+                        dragger = game.dragger
 
                 # quit application
                 elif event.type == pygame.QUIT:
