@@ -79,13 +79,25 @@ class Board:
 
                         # empty row = continue looping
                         if self.squares[possible_move_row][possible_move_col].is_empty():
-                            # append new move
-                            piece.add_move(move)
+                            # check potential checks
+                            if bool:
+                                if not self.in_check(piece, move):
+                                    # append new valid move
+                                    piece.add_move(move)
+                            else:
+                                # append new valid move
+                                piece.add_move(move)
 
                         # has enemy piece = add_move + break
                         elif self.squares[possible_move_row][possible_move_col].has_enemy_piece(piece.color):
-                            # append new move
-                            piece.add_move(move)
+                            # check potential checks
+                            if bool:
+                                if not self.in_check(piece, move):
+                                    # append new valid move
+                                    piece.add_move(move)
+                            else:
+                                # append new valid move
+                                piece.add_move(move)
                             break
 
                         # has team piece = break
@@ -162,8 +174,14 @@ class Board:
                         final = Square(possible_move_row, possible_move_col, final_piece)
                         # create new move
                         move = Move(initial, final)
-                        # append new valid move
-                        piece.add_move(move)
+                        # check potential checks
+                        if bool:
+                            if not self.in_check(piece, move):
+                                # append new valid move
+                                piece.add_move(move)
+                        else:
+                            # append new valid move
+                            piece.add_move(move)
 
         elif isinstance(piece, Bishop):
             __straight_line_moves([
@@ -214,8 +232,16 @@ class Board:
                         final = Square(possible_move_row, possible_move_col)
                         # create new move
                         move = Move(initial, final)
-                        # append new valid move
-                        piece.add_move(move)
+                        # check potential checks
+                        if bool:
+                            if not self.in_check(piece, move):
+                                # append new valid move
+                                piece.add_move(move)
+                            else:
+                                break
+                        else:
+                            # append new valid move
+                            piece.add_move(move)
 
             # castling moves
             if not piece.moved:
@@ -234,14 +260,25 @@ class Board:
                                 # rook move
                                 initial = Square(row, 0)
                                 final = Square(row, 3)
-                                move = Move(initial, final)
-                                left_rook.add_move(move)
+                                moveRock = Move(initial, final)
 
                                 # king move
                                 initial = Square(row, col)
                                 final = Square(row, 2)
-                                move = Move(initial, final)
-                                piece.add_move(move)
+                                moveKing = Move(initial, final)
+
+                                # check potential checks
+                                if bool:
+                                    if not self.in_check(piece, moveKing) and not self.in_check(left_rook, moveRock):
+                                        # append new valid move Rock
+                                        left_rook.add_move(moveRock)
+                                        # append new valid move king
+                                        piece.add_move(moveKing)
+                                else:
+                                    # append new valid move Rock
+                                    left_rook.add_move(moveRock)
+                                    # append new valid move king
+                                    piece.add_move(moveKing)
 
                 # king castling
                 right_rook = self.squares[row][7].piece
@@ -258,14 +295,25 @@ class Board:
                                 # rook move
                                 initial = Square(row, 7)
                                 final = Square(row, 5)
-                                move = Move(initial, final)
-                                right_rook.add_move(move)
+                                moveRock = Move(initial, final)
 
                                 # rook move
                                 initial = Square(row, col)
                                 final = Square(row, 6)
-                                move = Move(initial, final)
-                                piece.add_move(move)
+                                moveKing = Move(initial, final)
+
+                                # check potential checks
+                                if bool:
+                                    if not self.in_check(piece, moveKing) and not self.in_check(right_rook, moveRock):
+                                        # append new valid move Rock
+                                        right_rook.add_move(moveRock)
+                                        # append new valid move king
+                                        piece.add_move(moveKing)
+                                else:
+                                    # append new valid move Rock
+                                    right_rook.add_move(moveRock)
+                                    # append new valid move king
+                                    piece.add_move(moveKing)
 
     def check_promotion(self, piece, final):
         if final.row == 0 or final.row == 7:
